@@ -1,0 +1,21 @@
+{
+    "prompt-format": "&path; $",
+    "indentation-level": "2",
+    "scripts": {
+        "build": "ghc &fpath;",
+        "run": "ghc -o &fname; &fpath;",
+        "interactive": "ghci &fpath;"
+    },
+    "on-start": {
+        "show-prompt": false
+    },
+    "on-save": {
+        "formatter": {
+            "run": true,
+            "script": "ormolu &fpath;"
+        }
+    },
+    "performance": {
+        "disable-line-character-position": false
+    }
+}

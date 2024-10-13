@@ -1,0 +1,35 @@
+Haskedit:
+ Haskedit is a simple nw.js based text editor for haskell with support for
+ automatic haskell formatting, haskell syntax highlighting and a terminal
+ 'emulator'. Haskedit was built in a day, so don't expect the world from it,
+ but if you're just needing a lightweight editor for haskell, it'll get you
+ through.
+
+Terminal Editor:
+ The haskedit terminal 'emulator' isn't actually a terminal emulator, instead it
+ launches an instance of cmd.exe for each native [to windows] command and then
+ listens to the output. It does not support running cli applications like ghci,
+ however for ghci in particular, haskedit will spawn a new cmd.exe window.
+
+Commands:
+Some system commands are overridden and may not perform exactly as you would expect.
+ - cd {string}                  -> changes the current working directory.
+ - cls                          -> clears the console (permanent).
+
+The remaining commands are for haskedits terminal 'emulator'.
+ - set-indentation-level {num}  -> sets the editor indentation level.
+ - save {string|null} {--force} -> saves the specified or currently open file.
+ - open {string}                -> opens the specified file in the editor.
+ - quit {--force}               -> quits the application.
+ - ghci {arg string}            -> opens a new cmd.exe to launch a ghci environment.
+
+Keyboard Shortcuts:
+The below keyboard shortcuts are for managing the haskedit window.
+ - CTRL + Q                     -> quits the application, unless file is unsaved.
+ - CTRL + ARROW_UP              -> maximizes the application.
+ - CTRL + DOWN_ARROW            -> restores application (if maximized) or minimises the application.
+ - CTRL + SPACE                 -> toggles the command prompt interface.
+
+The remaining shortcuts are for quickly performing some of the haskedit commands.
+ - CTRL + S                     -> saves the open file
+ - CTRL + I                     -> launches a ghci environment in a new cmd.exe (for the current file).

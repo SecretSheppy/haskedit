@@ -1,0 +1,240 @@
+/* Haskedit styling is an improved, sanitized version of the
+basic-text-editor styling I developed a few months ago. */
+
+/* Theme */
+:root {
+    --border-bg: #8B83C2;
+    --main-bg-left: rgba(94, 82, 177, 0.9);
+    --main-bg-right: rgba(134, 87, 178, 0.9);
+    --status-bar-bg: rgba(139, 131, 194, 0.9);
+    --status-bar-hover: rgba(118, 111, 164, 0.9);
+    --command-prompt-bg: rgba(161, 153, 227, 0.9);
+
+    --command-prompt-height: 300px;
+    --status-bar-height: 22px;
+
+    --main-window-padding: 20px;
+}
+
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-corner {
+    background: transparent;
+}
+
+/* Style */
+.haskedit-window {
+    border: solid 2px var(--border-bg);
+    height: 100vh;
+    width: 100vw;
+    background: linear-gradient(to bottom right, var(--main-bg-left), var(--main-bg-right));
+    display: flex;
+    flex-direction: column;
+}
+
+/* % width measurement used in case of future switch to full border layout */
+.haskedit-main-region {
+    padding: var(--main-window-padding);
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+
+    & > .highlighted-code-override {
+        resize: none;
+        width: 100%;
+        height: 100%;
+        background: transparent !important;
+        border: none !important;
+        outline: none !important;
+        font-family: 'Courier New', Courier, monospace !important;
+        font-size: 15px;
+        overflow: auto;
+
+        &::-webkit-scrollbar-thumb {
+            background: var(--border-bg);
+            cursor: default;
+        }
+
+        &::-webkit-scrollbar-thumb:hover {
+            background: var(--status-bar-hover);
+            cursor: default;
+        }
+
+        &::placeholder {
+            color: #fff;
+        }
+    }
+
+    & .highlighted-code, & code {
+        font-family: 'Courier New', Courier, monospace !important;
+        font-size: 15px;
+    }
+}
+
+.haskedit-prompt {
+    height: var(--command-prompt-height);
+    width: 100%;
+    flex-shrink: 0;
+    background: var(--command-prompt-bg);
+    padding: var(--main-window-padding);
+
+    &.collapsed {
+        display: none;
+    }
+
+    & .prompt-text {
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 15px;
+        color: #fff;
+        overflow-x: hidden;
+        overflow-y: auto;
+        flex-shrink: 0;
+    }
+
+    & .stderr {
+        background: red;
+    }
+
+    & > .prompt-inner {
+        height: calc(var(--command-prompt-height) - 2 * var(--main-window-padding));
+        overflow: auto;
+
+        &::-webkit-scrollbar-thumb {
+            background: var(--main-bg-left);
+            cursor: default;
+        }
+
+        &::-webkit-scrollbar-thumb:hover {
+            background: var(--main-bg-right);
+            cursor: default;
+        }
+
+        & .banner-wrapper {
+            display: flex;
+            gap: 20px;
+
+            & > .haskedit-icon {
+                width: 150px;
+            }
+
+            & > .haskedit-info {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                gap: 10px;
+            }
+        }
+
+        & > .prompt-wrapper {
+            display: flex;
+            gap: 9px;
+            align-items: center;
+
+            & > .prompt-input {
+                padding: 0;
+                border: none;
+                background: none;
+                outline: none;
+                color: #fff;
+                font-family: 'Courier New', Courier, monospace;
+                font-size: 15px;
+                width: 100%;
+            }
+        }
+    }
+}
+
+.haskedit-status {
+    height: var(--status-bar-height);
+    width: 100%;
+    flex-shrink: 0;
+    display: flex;
+    background: var(--status-bar-bg);
+    padding: 0 10px 0 10px;
+
+    & > .status-item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: var(--status-bar-height);
+        flex-shrink: 0;
+        padding: 10px;
+        font-family: 'Courier New', Courier, monospace;
+        color: #fff;
+        font-size: 14px;
+        cursor: default;
+
+        &.blurred {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        &:hover:not(.blurred) {
+            background: var(--status-bar-hover);
+        }
+
+        &.saved-indicator {
+            &.false {
+                background: red;
+            }
+
+            &.true {
+                background: green;
+            }
+        }
+
+        &.formatted-indicator {
+            &.true {
+                background: #1f6feb;
+            }
+
+            &.false {
+                background: #a2144a;
+            }
+
+            &.formatting {
+                width: 130px;
+                background: #631feb;
+                justify-content: normal;
+
+                &::after {
+                    content: "";
+                    animation: loading 2s infinite;
+                }
+            }
+        }
+    }
+
+    & > .spacer {
+        width: 100%;
+    }
+}
+
+@keyframes loading {
+    0% {
+        content: ""
+    }
+    25% {
+        content: "."
+    }
+    50% {
+        content: ".."
+    }
+    75% {
+        content: "...";
+    }
+}

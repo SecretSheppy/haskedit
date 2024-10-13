@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Haskedit - New</title>
+    <link rel="stylesheet" href="haskedit.css" />
+    <!-- This file can be whichever theme you'd like from
+        https://github.com/highlightjs/highlight.js/tree/main/src/styles -->
+    <link rel="stylesheet" href="themes/github-dark.css" />
+    <script src="main.js"></script>
+</head>
+<body class="haskedit-window">
+<!-- text editing area -->
+<div class="haskedit-main-region">
+    <script type="module">
+        /* To install this file you need to `npm install highlighted-code`
+         * and then copy the `node_modules/highlighted-code/index.js` file
+         * into the position referenced below. */
+        (async () => { await import ('./lib/highlighted-code/index.js'); })();
+    </script>
+    <textarea id="editor" class="highlighted-code-override" is="highlighted-code" language="haskell" tab-size="2" placeholder="Space, the final frontier"></textarea>
+</div>
+<!-- command prompt allows you run commands and see the stdout -->
+<div id="prompt-region" class="haskedit-prompt collapsed">
+    <div id="prompt-inner" class="prompt-inner">
+        <div id="stdout" class="stdout-wrapper"></div>
+        <div id="prompt-wrapper" class="prompt-wrapper">
+            <p id="prompt" class="prompt-text"></p>
+            <input id="prompt-input" class="prompt-input" type="text" />
+        </div>
+    </div>
+</div>
+<!-- useful information like saved status, build status, line number, character
+    encoding standards, indentation level -->
+<div class="haskedit-status">
+    <div id="saved-indicator" class="status-item saved-indicator true">Saved</div>
+    <div id="formatted-indicator" class="status-item formatted-indicator false">Not Formatted</div>
+    <div class="spacer"></div>
+    <div id="line-character-numbers" class="status-item">0:0</div>
+    <div id="character-encoding" class="status-item blurred">UTF-8</div>
+    <div id="indentation-level" class="status-item">2 spaces</div>
+</div>
+</body>
+</html>
