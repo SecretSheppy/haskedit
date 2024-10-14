@@ -230,7 +230,6 @@ function openFileInGui(filePath) {
  * Opens a file if the file name was detected in the args string.
  */
 function openFileIfNwArgs() {
-    writeStdout(nw.App.argv.toString());
     if (nw.App.argv[0] !== undefined) {
         openFileInGui(path.resolve(nw.App.argv[0]));
     }
