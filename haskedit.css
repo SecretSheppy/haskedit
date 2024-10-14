@@ -4,8 +4,8 @@ basic-text-editor styling I developed a few months ago. */
 /* Theme */
 :root {
     --border-bg: #8B83C2;
-    --main-bg-left: rgba(94, 82, 177, 1);
-    --main-bg-right: rgba(134, 87, 178, 1);
+    --main-bg-left: rgba(94, 82, 177, 0.95);
+    --main-bg-right: rgba(134, 87, 178, 0.95);
     --status-bar-bg: rgba(139, 131, 194, 0.9);
     --status-bar-hover: rgba(118, 111, 164, 0.9);
     --command-prompt-bg: rgba(161, 153, 227, 0.9);
