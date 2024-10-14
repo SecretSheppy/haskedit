@@ -121,18 +121,8 @@ cmd.registerCustomCommand('save', (args) => {
  */
 cmd.registerCustomCommand('open', (args) => {
     let filePath = path.join(cmd.getCwd(), args[0]);
-    let text = file.openFile(filePath, 'utf-8');
-
-    if (text == null) {
-        writeStderr(`failed to open file ${filePath}`);
-        showCommandPrompt();
-        return;
-    }
-
-    document.getElementById('editor').value = text;
-    updateSavedIndicator();
+    openFileInGui(filePath);
     showCommandPrompt();
-    checkFileFormatting();
 });
 
 /**
@@ -156,6 +146,9 @@ cmd.registerCustomCommand('ghci', (args) => {
     showCommandPrompt();
 });
 
+/**
+ * Shows the help dialogue
+ */
 cmd.registerCustomCommand('help', () => {
     let bannerWrapper = document.createElement('div');
     bannerWrapper.classList.add('banner-wrapper');
@@ -212,6 +205,35 @@ function guiConfig() {
     }
 
     document.getElementById('editor').focus();
+}
+
+/**
+ * Opens a file in the gui.
+ *
+ * @param filePath
+ */
+function openFileInGui(filePath) {
+    let text = file.openFile(filePath, 'utf-8');
+
+    if (text == null) {
+        writeStderr(`failed to open file ${filePath}`);
+        showCommandPrompt();
+        return;
+    }
+
+    document.getElementById('editor').value = text;
+    updateSavedIndicator();
+    checkFileFormatting();
+}
+
+/**
+ * Opens a file if the file name was detected in the args string.
+ */
+function openFileIfNwArgs() {
+    writeStdout(nw.App.argv.toString());
+    if (nw.App.argv[0] !== undefined) {
+        openFileInGui(path.resolve(nw.App.argv[0]));
+    }
 }
 
 /**
@@ -451,6 +473,7 @@ function checkFileFormatting() {
  */
 document.addEventListener('DOMContentLoaded', () => {
     guiConfig();
+    openFileIfNwArgs();
 
     /**
      * Runs the command prompt

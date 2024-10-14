@@ -8,7 +8,7 @@ const utils = require('./utils.js');
  * The current working directory of the terminal. default location is the
  * haskedit install directory.
  */
-let cwd = process.cwd();
+let cwd = nw.App.startPath;
 
 /**
  * The current running cmd process.
