@@ -2,13 +2,13 @@
 
 const config = require('./config.json');
 const pkg = require('./package.json');
-const cmd = require('./cmd.js');
-const file = require('./file.js');
-const parser = require('./parser.js');
+const cmd = require('./haskedit_models/cmd.js');
+const file = require('./haskedit_models/file.js');
+const parser = require('./haskedit_models/parser.js');
 const path = require('node:path');
 const fs = require('node:fs');
-const bindings = require('./bindings.js');
-const utils = require('./utils.js');
+const bindings = require('./haskedit_models/bindings.js');
+const utils = require('./haskedit_models/utils.js');
 const { exec, execSync } = require('node:child_process');
 
 /**
@@ -597,6 +597,8 @@ document.addEventListener('keydown', (e) => {
 
 /**
  * TODO:
+ *  - add a custom style for text
+ *  - When saving convert all tabs to an equal number of spaces
  *  - Run command (ghc) + keybinding
  *  - Build command (ghc) + keybinding
  */
