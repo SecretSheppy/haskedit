@@ -87,6 +87,7 @@ cmd.registerCustomCommand('save', (args) => {
         if (file.getFilePath() === undefined) {
             writeStderr('file has not been previously saved, must give a filename');
         } else {
+            replaceTabsWithSpaces();
             file.saveFile(editor.value, 'utf-8');
             window.saved = true;
             updateSavedIndicator();
@@ -429,6 +430,7 @@ function formatFile() {
         document.getElementById('editor').value
             = formattedText.toString();
 
+        replaceTabsWithSpaces();
         file.saveFile(formattedText.toString(), 'utf-8');
         console.log('formatted file successfully');
 
@@ -465,6 +467,15 @@ function checkFileFormatting() {
         writeStderr(`format checker failed to format ${file.getLocalName()} with command "${command}"`);
         showCommandPromptRegion();
     }
+}
+
+/**
+ * Replaces all tabs in the editor with the current tab-size worth of spaces.
+ */
+function replaceTabsWithSpaces() {
+    let editor = document.getElementById('editor');
+    let tabSize = parseInt(editor.getAttribute('tab-size'));
+    editor.value = editor.value.replace(/\t/g, ' '.repeat(tabSize));
 }
 
 /**
@@ -583,6 +594,7 @@ document.addEventListener('keydown', (e) => {
             writeStderr('file has not been previously saved, must give a filename');
             showCommandPromptRegion();
         } else {
+            replaceTabsWithSpaces();
             file.saveFile(editor.value, 'utf-8');
             window.saved = true;
             updateSavedIndicator();
@@ -597,8 +609,6 @@ document.addEventListener('keydown', (e) => {
 
 /**
  * TODO:
- *  - add a custom style for text
- *  - When saving convert all tabs to an equal number of spaces
  *  - Run command (ghc) + keybinding
  *  - Build command (ghc) + keybinding
  */
