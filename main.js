@@ -606,9 +606,3 @@ document.addEventListener('keydown', (e) => {
         exec(`start cmd.exe /k "ghci ${file.getAbsolutePath()}"`);
     }
 });
-
-/**
- * TODO:
- *  - Run command (ghc) + keybinding
- *  - Build command (ghc) + keybinding
- */
