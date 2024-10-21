@@ -1,0 +1,74 @@
+.hljs {
+    color: #c9d1d9;
+}
+
+.hljs-keyword,
+.hljs-meta .hljs-keyword {
+    color: #ffc25d;
+}
+
+.hljs-doctag,
+.hljs-template-tag,
+.hljs-template-variable,
+.hljs-type,
+.hljs-variable.language_ {
+    color: #eadb8d;
+}
+
+.hljs-title,
+.hljs-title.class_,
+.hljs-title.class_.inherited__,
+.hljs-title.function_ {
+    color: #ff95b4;
+    font-style: italic;
+}
+
+.hljs-attr,
+.hljs-attribute,
+.hljs-literal,
+.hljs-meta,
+.hljs-number,
+.hljs-operator,
+.hljs-variable,
+.hljs-selector-attr,
+.hljs-selector-class,
+.hljs-selector-id {
+    color: #79c0ff;
+}
+
+.hljs-regexp,
+.hljs-string,
+.hljs-meta .hljs-string {
+    color: #69d0e3;
+}
+
+.hljs-built_in,
+.hljs-symbol {
+    color: #ffa657;
+}
+
+.hljs-comment {
+    color: #e9d0fd;
+}
+
+.hljs-code,
+.hljs-formula,
+.hljs-name,
+.hljs-quote,
+.hljs-selector-tag,
+.hljs-selector-pseudo,
+.hljs-subst,
+.hljs-section,
+.hljs-bullet,
+.hljs-emphasis,
+.hljs-strong,
+.hljs-addition,
+.hljs-deletion,
+.hljs-char.escape_,
+.hljs-link,
+.hljs-params,
+.hljs-property,
+.hljs-punctuation,
+.hljs-tag {
+    /* not used for haskell syntax */
+}
