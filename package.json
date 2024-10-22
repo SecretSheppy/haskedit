@@ -19,6 +19,7 @@
     },
     "chromium-args": "--mixed-context --disable-pinch",
     "dependencies": {
+        "highlighted-code": "^0.3.7",
         "tree-kill": "^1.2.2"
     }
 }
