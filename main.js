@@ -121,7 +121,12 @@ cmd.registerCustomCommand('save', (args) => {
  * Attempts to open the specified file and then puts its text into the editor.
  */
 cmd.registerCustomCommand('open', (args) => {
-    let filePath = path.join(cmd.getCwd(), args[0]);
+    let filePath = args[0];
+
+    if (!path.isAbsolute(args[0])) {
+        filePath = path.join(cmd.getCwd(), args[0]);
+    }
+
     openFileInGui(filePath);
     showCommandPrompt();
 });
