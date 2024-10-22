@@ -40,6 +40,23 @@ The experience of Haskedit can be greatly improved by setting Haskedit as the de
 | Save currently open file                                       | `Ctrl` + `S` |
 | Launches ghci in a new `cmd.exe` window (for the current file) | `Ctrl` + `I` |
 
+### Customize Haskedit Shortcuts
+
+Haskedit shortcuts are defined as boolean functions and can be found in the `haskedit_modules/bindings.js` file. To customize them use the `KeyboardEvent`
+object passed into each function.
+
+```js
+/**
+ * The default key binding for the window quit functionality. Quits on ctrl + q
+ * 
+ * @param {KeyboardEvent} e The keyboard event object from the keydown event.
+ * @returns {boolean} If the binding is currently pressed
+ */
+function quit(e) {
+    return e.ctrlKey && e.key === 'q';
+}
+```
+
 ### Haskedit Overridden Commands
 
 Due to the nature of Haskedits terminal 'emulator' as mentioned above, some system commands are overridden. Their functionality should remain the same,
