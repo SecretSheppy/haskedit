@@ -15,7 +15,7 @@ The simple Haskell editor for Windows built with Javascript
     - [Haskedit Overridden Commands](#haskedit-overridden-commands)
     - [Haskedit Terminal Commands](#haskedit-terminal-commands)
 - [Use on non-Windows platforms](#use-on-non-windows-platforms)
-- [Why/Should You Use Haskedit](#whyshould-you-use-haskedit)
+- [Should You Use Haskedit](#should-you-use-haskedit)
 - [Long Term Support?](#long-term-support)
 - [Future Additions](#future-additions)
 
@@ -23,7 +23,7 @@ The simple Haskell editor for Windows built with Javascript
 
 Haskedit is a very simple Haskell editor for Windows that I built (mostly) in a day using Javascript and the nw.js runtime. I built it because I was 
 required to learn and use Haskell for a few months and having tried most of the freely available existing editors decided that there was nothing I
-was truly happy with. Haskedit supports Syntax highlighting, automatic code formatting and some quality of life shortcuts.
+was truly happy with. Haskedit supports syntax highlighting, automatic code formatting and some quality of life shortcuts.
 
 Haskedit is by no means the best Haskell editor, but it has served me well and overall I've been quite pleased with it.
 
@@ -41,19 +41,19 @@ The experience of Haskedit can be greatly improved by setting Haskedit as the de
 
 ### Managing the Haskedit Window
 
-| Action                                                | Binding               |
-|-------------------------------------------------------|-----------------------|
-| Quit Haskedit (Unless file unsaved)                   | `Ctrl` + `Q`          |
-| Maximize Haskedit                                     | `Ctrl` + `Arrow Up`   |
-| Restore Haskedit if maximized, else Minimize Haskedit | `Ctrl` + `Arrow Down` |
-| Toggle Command Prompt                                 | `Ctrl` + `Space`      |
+| Action                                                | Binding                                 |
+|-------------------------------------------------------|-----------------------------------------|
+| Quit Haskedit (Unless file unsaved)                   | <kbd>Ctrl</kbd> + <kbd>Q</kbd>          |
+| Maximize Haskedit                                     | <kbd>Ctrl</kbd> + <kbd>Arrow Up</kbd>   |
+| Restore Haskedit if maximized, else Minimize Haskedit | <kbd>Ctrl</kbd> + <kbd>Arrow Down</kbd> |
+| Toggle Command Prompt                                 | <kbd>Ctrl</kbd> + <kbd>Space</kbd>      |
 
 ### Haskedit Command Shortcuts
 
-| Action                                                         | Binding      |
-|----------------------------------------------------------------|--------------|
-| Save currently open file                                       | `Ctrl` + `S` |
-| Launches ghci in a new `cmd.exe` window (for the current file) | `Ctrl` + `I` |
+| Action                                                         | Binding                        |
+|----------------------------------------------------------------|--------------------------------|
+| Save currently open file                                       | <kbd>Ctrl</kbd> + <kbd>S</kbd> |
+| Launches ghci in a new `cmd.exe` window (for the current file) | <kbd>Ctrl</kbd> + <kbd>I</kbd> |
 
 ### Customize Haskedit Shortcuts
 
@@ -84,28 +84,28 @@ however it is best to be aware that they may not perform exactly as you would ex
 
 ### Haskedit Terminal Commands
 
-| Command                               | Function                                          |
-|---------------------------------------|---------------------------------------------------|
-| `set-indentation-level` {`num`}       | sets the editor indentation level.                |                                  
-| `save` {`string`\|`null`} {`--force`} | saves the specified or currently open file.       |
-| `open` {`string`}                     | opens the specified file in the editor.           |                                  
-| `quit` {`--force`}                    | quits the application.                            |                                  
-| `ghci` {`arg string`}                 | opens a new cmd.exe to launch a ghci environment. |          
+| Command                           | Function                                          |
+|-----------------------------------|---------------------------------------------------|
+| `set-indentation-level` \[`num`\] | sets the editor indentation level.                |                                  
+| `save` \[`string`\] \[`--force`\] | saves the specified or currently open file.       |
+| `open` \[`string`\]               | opens the specified file in the editor.           |                                  
+| `quit` \[`--force`\]              | quits the application.                            |                                  
+| `ghci` \[`arg string`\]           | opens a new cmd.exe to launch a ghci environment. |          
 
 ## Use on non-Windows platforms
 
 Currently, Haskedit only supports Windows due to hard coded file paths and executables. I suspect this will remain the case as I have no reason
 to change this, however if you are desperate to use it on a non-Windows platform these issues shouldn't take to long to resolve.
 
-## Why/Should You Use Haskedit?
+## Should You Use Haskedit?
 
 The answer to this is very simple: **you probably shouldn't**. I built Haskedit because I didn't like or couldn't configure any of the existing
-editors that support Haskell in the way that I wanted, however this doesn't make Haskedit good. It has been very useful and light weight for me,
+editors that support Haskell in the way that I wanted, however this doesn't make Haskedit good. It has been very useful and lightweight for me,
 however it is lacking very key features like syntax checking (though this can mostly be done through ghci) and tab completion.
 
 ## Long Term Support?
 
-As this project was largely built in one day, I do not intend to support it for longer than I need to use haskell.
+As this project was largely built in one day, I do not intend to support it for longer than I need to use Haskell.
 
 ## Future Additions
 
