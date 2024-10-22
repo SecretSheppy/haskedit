@@ -4,6 +4,21 @@ The simple Haskell editor for Windows built with Javascript
 
 ![Haskedit Interface](docs/haskedit.webp)
 
+## Contents
+
+- [About Haskedit](#about-haskedit)
+    - [Haskedits Terminal 'Emulator'](#haskedits-terminal-emulator)
+- [Use Haskedit](#use-haskedit)
+    - [Managing the Haskedit Window](#managing-the-haskedit-window)
+    - [Haskedit Command Shortcuts](#haskedit-command-shortcuts)
+    - [Customize Haskedit Shortcuts](#customize-haskedit-shortcuts)
+    - [Haskedit Overridden Commands](#haskedit-overridden-commands)
+    - [Haskedit Terminal Commands](#haskedit-terminal-commands)
+- [Use on non-Windows platforms](#use-on-non-windows-platforms)
+- [Why/Should You Use Haskedit](#whyshould-you-use-haskedit)
+- [Long Term Support?](#long-term-support)
+- [Future Additions](#future-additions)
+
 ## About Haskedit
 
 Haskedit is a very simple Haskell editor for Windows that I built (mostly) in a day using Javascript and the nw.js runtime. I built it because I was 
