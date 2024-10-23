@@ -15,11 +15,14 @@
         "position": "center"
     },
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "jest"
     },
     "chromium-args": "--mixed-context --disable-pinch",
     "dependencies": {
         "highlighted-code": "^0.3.7",
         "tree-kill": "^1.2.2"
+    },
+    "devDependencies": {
+        "jest": "^29.7.0"
     }
 }
