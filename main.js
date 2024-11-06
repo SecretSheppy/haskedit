@@ -91,6 +91,7 @@ cmd.registerCustomCommand('save', (args) => {
             file.saveFile(editor.value, 'utf-8');
             window.saved = true;
             updateSavedIndicator();
+            updateFileNameDisplay();
             formatFile();
         }
         showCommandPrompt();
@@ -114,6 +115,7 @@ cmd.registerCustomCommand('save', (args) => {
     showCommandPrompt();
     window.saved = true;
     updateSavedIndicator();
+    updateFileNameDisplay();
     formatFile();
 });
 
@@ -127,7 +129,7 @@ cmd.registerCustomCommand('open', (args) => {
         filePath = path.join(cmd.getCwd(), args[0]);
     }
 
-    openFileInGui(filePath);
+    openFileInGui(path.resolve(filePath));
     showCommandPrompt();
 });
 
@@ -230,6 +232,7 @@ function openFileInGui(filePath) {
 
     document.getElementById('editor').value = text;
     updateSavedIndicator();
+    updateFileNameDisplay();
     checkFileFormatting();
 }
 
@@ -388,6 +391,13 @@ function updateSavedIndicator() {
     indicator.classList.remove('true');
     indicator.classList.add('false');
     document.title = `Haskedit - ${file.getLocalName()}*`;
+}
+
+function updateFileNameDisplay() {
+    let nameDisplay = document.getElementById('file-name-display');
+    if (window.saved) {
+        nameDisplay.innerText = parser.parse(config["file-name-display-format"]);
+    }
 }
 
 /**
@@ -604,6 +614,7 @@ document.addEventListener('keydown', (e) => {
             file.saveFile(editor.value, 'utf-8');
             window.saved = true;
             updateSavedIndicator();
+            updateFileNameDisplay();
             formatFile();
         }
     }

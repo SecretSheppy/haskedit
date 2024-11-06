@@ -179,7 +179,17 @@ basic-text-editor styling I developed a few months ago. */
             color: rgba(255, 255, 255, 0.6);
         }
 
-        &:hover:not(.blurred) {
+        &.file {
+            user-select: none;
+            display: flex;
+            gap: 10px;
+
+            &::before {
+                content: "File:";
+            }
+        }
+
+        &:hover:not(.blurred, .file) {
             background: var(--status-bar-hover);
         }
 

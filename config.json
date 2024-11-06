@@ -1,5 +1,6 @@
 {
     "prompt-format": "&path; $",
+    "file-name-display-format": "&fpath;",
     "indentation-level": "2",
     "scripts": {
         "build": "ghc &fpath;",
