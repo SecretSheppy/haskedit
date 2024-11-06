@@ -129,7 +129,11 @@ cmd.registerCustomCommand('open', (args) => {
         filePath = path.join(cmd.getCwd(), args[0]);
     }
 
-    openFileInGui(path.resolve(filePath));
+    openFileInGui(path.resolve(filePath)).then(() => {
+        console.info('file loaded');
+    }).catch((err) => {
+        console.error(err);
+    });
     showCommandPrompt();
 });
 
@@ -221,8 +225,10 @@ function guiConfig() {
  *
  * @param filePath
  */
-function openFileInGui(filePath) {
-    let text = file.openFile(filePath, 'utf-8');
+async function openFileInGui(filePath) {
+    showFileLoadingDisplay();
+
+    let text = await file.openFile(filePath, 'utf-8');
 
     if (text == null) {
         writeStderr(`failed to open file ${filePath}`);
@@ -241,7 +247,11 @@ function openFileInGui(filePath) {
  */
 function openFileIfNwArgs() {
     if (nw.App.argv[0] !== undefined) {
-        openFileInGui(path.resolve(nw.App.argv[0]));
+        openFileInGui(path.resolve(nw.App.argv[0])).then(() => {
+            console.info('file loaded');
+        }).catch((err) => {
+            console.error(err);
+        });
     }
 }
 
@@ -393,11 +403,25 @@ function updateSavedIndicator() {
     document.title = `Haskedit - ${file.getLocalName()}*`;
 }
 
+/**
+ * Puts the filename/path into the status bar in the format specified by the
+ * user in the config.json file.
+ */
 function updateFileNameDisplay() {
     let nameDisplay = document.getElementById('file-name-display');
+    nameDisplay.classList.remove('loading');
     if (window.saved) {
         nameDisplay.innerText = parser.parse(config["file-name-display-format"]);
     }
+}
+
+/**
+ * Shows the file loading display.
+ */
+function showFileLoadingDisplay() {
+    let nameDisplay = document.getElementById('file-name-display');
+    nameDisplay.innerText = 'Loading';
+    nameDisplay.classList.remove('loading');
 }
 
 /**

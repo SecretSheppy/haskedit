@@ -86,9 +86,9 @@ function setOpenFile(absolutePath) {
  * @param {BufferEncoding} encoding
  * @returns {null|string} returns a string if the file was opened.
  */
-function openFile(absolutePath, encoding) {
+async function openFile(absolutePath, encoding) {
     try {
-        let fileText = fs.readFileSync(absolutePath, { encoding: encoding });
+        let fileText = await fs.promises.readFile(absolutePath, { encoding: encoding });
 
         setOpenFile(absolutePath);
 

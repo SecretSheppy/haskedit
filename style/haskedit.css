@@ -181,11 +181,17 @@ basic-text-editor styling I developed a few months ago. */
 
         &.file {
             user-select: none;
-            display: flex;
-            gap: 10px;
 
             &::before {
                 content: "File:";
+                margin-right: 10px;
+            }
+
+            &.loading {
+                &::after {
+                    content: "";
+                    animation: loading 2s infinite;
+                }
             }
         }
 
