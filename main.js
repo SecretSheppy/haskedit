@@ -148,7 +148,8 @@ cmd.registerCustomCommand('quit', (args) => {
  * prompt)
  */
 cmd.registerCustomCommand('ghci', (args) => {
-    exec(`start cmd.exe /k "ghci ${args.join(' ')}"`);
+    exec(`start cmd.exe /k "${parser.parseFilePath(config.scripts.interactive,
+        args.join(' '))}"`);
     showCommandPrompt();
 });
 
@@ -608,6 +609,6 @@ document.addEventListener('keydown', (e) => {
     }
 
     if (bindings.interactive(e)) {
-        exec(`start cmd.exe /k "ghci ${file.getAbsolutePath()}"`);
+        exec(`start cmd.exe /k "${parser.parse(config.scripts.interactive)}"`);
     }
 });

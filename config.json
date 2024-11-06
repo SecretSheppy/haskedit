@@ -4,7 +4,7 @@
     "scripts": {
         "build": "ghc &fpath;",
         "run": "ghc -o &fname; &fpath;",
-        "interactive": "ghci &fpath;"
+        "interactive": "stack ghci &fpath;"
     },
     "on-start": {
         "show-prompt": false
