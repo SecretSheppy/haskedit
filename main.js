@@ -8,7 +8,7 @@ const parser = require('./haskedit_modules/parser.js');
 const path = require('node:path');
 const fs = require('node:fs');
 const bindings = require('./haskedit_modules/bindings.js');
-const utils = require('./haskedit_modules/utils.js');
+const utils = require('./haskedit_modules/utils/utils.js');
 const { exec, execSync } = require('node:child_process');
 
 /**
@@ -67,7 +67,7 @@ cmd.registerCustomCommand('cd', (args) => {
  */
 cmd.registerCustomCommand('set-indentation-level', (args) => {
     let newLevel = args.join();
-    if (utils.isInt(newLevel)) {
+    if (utils.stringIsInt(newLevel)) {
         setIndentationLevel(newLevel);
     } else {
         writeStderr(`${newLevel} is not a valid indentation level`);

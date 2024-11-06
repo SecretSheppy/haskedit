@@ -19,12 +19,12 @@ function prepend(value, array) {
  * @param {string} value
  * @returns {boolean}
  */
-function isInt(value) {
+function stringIsInt(value) {
     let num = parseInt(value, 10)
     return !isNaN(num) && num.toString() === value;
 }
 
 module.exports = exports = {
     prepend,
-    isInt
+    stringIsInt
 }

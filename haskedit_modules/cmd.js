@@ -2,7 +2,7 @@
 
 const { spawn } = require('node:child_process');
 const kill = require('tree-kill');
-const utils = require('./utils.js');
+const utils = require('./utils/utils.js');
 
 /**
  * The current working directory of the terminal. default location is the
