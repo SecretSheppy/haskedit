@@ -567,11 +567,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (e.key === 'ArrowUp') {
+            e.preventDefault();
+
             e.target.value = cmd.getCommandStringFromHistoryAt(window.historyIndex);
             window.historyIndex++;
         }
 
         if (e.key === 'ArrowDown') {
+            e.preventDefault();
+
             e.target.value = cmd.getCommandStringFromHistoryAt(window.historyIndex);
             if (window.historyIndex > 0) {
                 window.historyIndex--;
