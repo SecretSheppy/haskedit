@@ -21,6 +21,7 @@ basic-text-editor styling I developed a few months ago. */
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'JetBrains Mono', monospace !important;
 }
 
 /* Scrollbar styling */
@@ -61,7 +62,6 @@ basic-text-editor styling I developed a few months ago. */
         background: transparent !important;
         border: none !important;
         outline: none !important;
-        font-family: 'JetBrains Mono', monospace !important;
         font-size: 15px;
         overflow: auto;
 
@@ -81,7 +81,6 @@ basic-text-editor styling I developed a few months ago. */
     }
 
     & .highlighted-code, & code {
-        font-family: 'JetBrains Mono', monospace !important;
         font-size: 15px;
     }
 }
@@ -98,7 +97,6 @@ basic-text-editor styling I developed a few months ago. */
     }
 
     & .prompt-text {
-        font-family: 'JetBrains Mono', monospace;
         font-size: 15px;
         color: #fff;
         overflow-x: hidden;
@@ -151,7 +149,6 @@ basic-text-editor styling I developed a few months ago. */
                 background: none;
                 outline: none;
                 color: #fff;
-                font-family: 'JetBrains Mono', monospace;
                 font-size: 15px;
                 width: 100%;
             }
@@ -174,7 +171,6 @@ basic-text-editor styling I developed a few months ago. */
         height: var(--status-bar-height);
         flex-shrink: 0;
         padding: 10px;
-        font-family: 'JetBrains Mono', monospace;
         color: #fff;
         font-size: 14px;
         cursor: default;
