@@ -23,6 +23,18 @@ function parse(script) {
     return script;
 }
 
+/**
+ * parses a file path into a script
+ *
+ * @param {string} script
+ * @param {string} filePath
+ * @returns {string}
+ */
+function parseFilePath(script, filePath) {
+    return script.replaceAll('&fpath;', filePath);
+}
+
 module.exports = exports = {
-    parse
+    parse,
+    parseFilePath
 }
