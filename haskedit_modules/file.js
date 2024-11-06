@@ -56,6 +56,15 @@ function getAbsolutePath() {
 }
 
 /**
+ * Returns the absolute file path but with an executable extension.
+ *
+ * @returns {string}
+ */
+function getAbsoluteExecutablePath() {
+    return `${filePath}\\${fileName}.exe`;
+}
+
+/**
  * Returns the file name and extension.
  *
  * @returns {string}
@@ -130,6 +139,7 @@ module.exports = exports = {
     getFileName,
     getFileExt,
     getAbsolutePath,
+    getAbsoluteExecutablePath,
     getLocalName,
     openFile,
     saveFile,

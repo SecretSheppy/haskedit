@@ -60,11 +60,33 @@ function interactive(e) {
     return e.ctrlKey && e.key === 'i';
 }
 
+/**
+ * Returns if the clicked binding was the ghc build binding
+ *
+ * @param {KeyboardEvent} e the keyboard event to check for
+ * @returns {boolean}
+ */
+function ghcBuild(e) {
+    return e.ctrlKey && e.key === 'b';
+}
+
+/**
+ * Returns if the clicked binding was the ghc run binding
+ *
+ * @param {KeyboardEvent} e the keyboard event to check for
+ * @returns {boolean}
+ */
+function ghcRun(e) {
+    return e.ctrlKey && e.key === 'r';
+}
+
 module.exports = {
     quit,
     maximize,
     restore,
     toggleCommandPrompt,
     save,
-    interactive
+    interactive,
+    ghcBuild,
+    ghcRun
 }

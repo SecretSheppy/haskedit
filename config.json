@@ -3,8 +3,8 @@
     "file-name-display-format": "&fpath;",
     "indentation-level": "2",
     "scripts": {
-        "build": "ghc &fpath;",
-        "run": "ghc -o &fname; &fpath;",
+        "build": "ghc -O2 &fpath;",
+        "run": "ghc --make &fpath; && &fpathexe;",
         "interactive": "stack ghci &fpath;"
     },
     "on-start": {

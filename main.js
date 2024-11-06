@@ -518,6 +518,35 @@ function replaceTabsWithSpaces() {
     editor.value = editor.value.replace(/\t/g, ' '.repeat(tabSize));
 }
 
+
+/**
+ * Runs a command in the command prompt. During command execution it hides
+ * the command prompt, and allows the user to press ctrl + c to kill the
+ * currently executing command.
+ *
+ * @param {string} command the command string.
+ * @param {boolean} override allows for the system to execute commands without
+ * having to put them into the terminal gui element.
+ */
+function runCommand(command, override = false) {
+    writeStdout(`${parser.parse(config["prompt-format"])} ${command}`);
+
+    if (!isCommandPromptEmpty() || override) {
+        hideCommandPrompt();
+
+        cmd.spawnCommand(cmd.parseArgs(command), (stdout) => {
+            writeStdout(stdout);
+        }, (stderr) => {
+            writeStderr(stderr);
+        }, () => {
+            showCommandPrompt();
+        });
+    }
+
+    clearCommandPrompt();
+    window.historyIndex = 0;
+}
+
 /**
  * Binding event listeners after the DOM has loaded.
  */
@@ -530,25 +559,7 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     document.getElementById('prompt-input').addEventListener('keydown', (e) => {
         if (e.key === 'Enter' && isCommandPromptVisible()) {
-            writeStdout(`${parser.parse(config["prompt-format"])} ${e.target.value}`);
-
-            if (!isCommandPromptEmpty()) {
-                hideCommandPrompt();
-
-                cmd.spawnCommand(cmd.parseArgs(e.target.value),
-                    (stdout) => {
-                        writeStdout(stdout);
-                    },
-                    (stderr) => {
-                        writeStderr(stderr);
-                    },
-                    () => {
-                        showCommandPrompt();
-                    });
-            }
-
-            clearCommandPrompt();
-            window.historyIndex = 0;
+            runCommand(e.target.value);
         }
 
         if (e.key === 'c' && e.ctrlKey) {
@@ -645,5 +656,13 @@ document.addEventListener('keydown', (e) => {
 
     if (bindings.interactive(e)) {
         exec(`start cmd.exe /k "${parser.parse(config.scripts.interactive)}"`);
+    }
+
+    if (bindings.ghcBuild(e)) {
+        runCommand(parser.parse(config.scripts.build), true);
+    }
+
+    if (bindings.ghcRun(e)) {
+        runCommand(parser.parse(config.scripts.run), true);
     }
 });

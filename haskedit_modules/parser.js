@@ -6,7 +6,8 @@ const cmd = require('./cmd.js');
 const syntax = {
     '&path;': cmd.getCwd,
     '&fpath;': file.getAbsolutePath,
-    '&fname;': file.getFileExt
+    '&fname;': file.getFileExt,
+    '&fpathexe;': file.getAbsoluteExecutablePath
 }
 
 /**
