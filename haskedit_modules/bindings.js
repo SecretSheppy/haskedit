@@ -80,6 +80,26 @@ function ghcRun(e) {
     return e.ctrlKey && e.key === 'r';
 }
 
+/**
+ * Returns if the clicked binding was the find and replace binding
+ *
+ * @param {KeyboardEvent} e the keyboard event to check for
+ * @returns {boolean}
+ */
+function find(e) {
+    return e.ctrlKey && e.key === 'f';
+}
+
+/**
+ * Returns if the clicked binding was the replace and find binding
+ *
+ * @param {KeyboardEvent} e the keyboard event to check for
+ * @returns {boolean}
+ */
+function replace(e) {
+    return e.ctrlKey && e.key === 'r';
+}
+
 module.exports = {
     quit,
     maximize,
@@ -87,6 +107,8 @@ module.exports = {
     toggleCommandPrompt,
     save,
     interactive,
+    find,
+    replace,
     ghcBuild,
     ghcRun
 }

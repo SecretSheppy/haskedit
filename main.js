@@ -9,7 +9,24 @@ const path = require('node:path');
 const fs = require('node:fs');
 const bindings = require('./haskedit_modules/bindings.js');
 const utils = require('./haskedit_modules/utils/utils.js');
+const fr = require('./haskedit_modules/find-and-replace/find-and-replace');
 const { exec, execSync } = require('node:child_process');
+
+/**
+ * The height of a character in the editor. Used to display the find and replace
+ * highlights.
+ *
+ * @type {number}
+ */
+const CHARACTER_HEIGHT_SCALAR = 18;
+
+/**
+ * The width of a character in the editor. Used to display the find and
+ * replace highlights.
+ *
+ * @type {number}
+ */
+const CHARACTER_WIDTH_SCALAR = 8.25;
 
 /**
  * Attaching window maximized state to the window object for ease of access.
@@ -33,6 +50,14 @@ window.saved = true;
  * @type {number}
  */
 window.historyIndex = 0;
+
+/**
+ * Boolean flag used to determine whether the highlight-js element has been
+ * added to the page.
+ *
+ * @type {boolean}
+ */
+window.editorExists = false;
 
 /**
  * Overriding the cls command and replacing it with one that will clear the
@@ -197,6 +222,34 @@ cmd.registerCustomCommand('help', () => {
     writeStdout(fs.readFileSync('./help.txt', 'utf-8'));
     showCommandPrompt();
 });
+
+/**
+ * Generates the element that will be nested into the hljs code view that will
+ * contain the absolutely positioned elements;
+ *
+ * @returns {HTMLDivElement}
+ */
+function generateHighlightsElement() {
+    let element = document.createElement('div');
+    element.id = 'haskedit-highlights';
+    element.classList.add('haskedit-highlights');
+    return element;
+}
+
+/**
+ * Shows the highlighted element at the top of the hljs code.
+ */
+function showHighlightedElement() {
+    document.getElementsByClassName('hljs')[0]
+        .prepend(generateHighlightsElement());
+}
+
+/**
+ * Removes the highlighted element at the top of the hljs code.
+ */
+function hideHighlightedElement() {
+    document.getElementById('haskedit-highlights').remove();
+}
 
 /**
  * Runs to set up the gui as is specified in the config.json file.
@@ -518,6 +571,51 @@ function replaceTabsWithSpaces() {
     editor.value = editor.value.replace(/\t/g, ' '.repeat(tabSize));
 }
 
+/**
+ * Shows the find and replace menu. It also adds the selection into the find
+ * input if there is one and then focuses it.
+ */
+function showFindAndReplace() {
+    document.getElementById('find-and-replace').classList.remove('collapsed');
+    let find = document.getElementById('find');
+
+    if (document.getSelection() !== null) {
+        find.value = document.getSelection().toString();
+    }
+
+    find.focus();
+}
+
+/**
+ * Shows the find and replace menu. It also adds the selection into the replace
+ * input if there is one and then focuses it.
+ */
+function showReplaceAndFind() {
+    document.getElementById('find-and-replace').classList.remove('collapsed');
+    let replace = document.getElementById('replace');
+
+    if (document.getSelection() !== null) {
+        replace.value = document.getSelection().toString();
+    }
+
+    replace.focus();
+}
+
+/**
+ * Hides the find and replace window.
+ */
+function hideFindAndReplace() {
+    let findReplacePrompt = document.getElementById('find-and-replace');
+
+    if (findReplacePrompt.classList.contains('collapsed')) {
+        return;
+    }
+
+    findReplacePrompt.classList.add('collapsed');
+    document.getElementById('find').value = '';
+    document.getElementById('editor').focus();
+    document.querySelector('.haskedit-highlight-region').remove();
+}
 
 /**
  * Runs a command in the command prompt. During command execution it hides
@@ -545,6 +643,86 @@ function runCommand(command, override = false) {
 
     clearCommandPrompt();
     window.historyIndex = 0;
+}
+
+/**
+ * Returns a fully built highlight element for the find and replace overlay.
+ *
+ * @param {number} x the x coordinate of the element (unscaled)
+ * @param {number} y the y cooridnate of the element (unscaled)
+ * @param {number} width the width of the element (unscaled)
+ * @returns {HTMLDivElement}
+ */
+function getHighlightElement(x, y, width) {
+    let highlight = document.createElement('div');
+    highlight.classList.add('highlight');
+
+    // inline styling use to change individual position to match text.
+    highlight.style.marginTop = x * CHARACTER_HEIGHT_SCALAR + 'px';
+    highlight.style.marginLeft = y * CHARACTER_WIDTH_SCALAR + 'px';
+    highlight.style.width = width * CHARACTER_WIDTH_SCALAR + 'px';
+
+    return highlight;
+}
+
+/**
+ * Returns if an element has at least one child
+ *
+ * @param {HTMLElement} element
+ * @returns {boolean}
+ */
+function hasChildren(element) {
+    return element.children.length > 0;
+}
+
+/**
+ * Is null or undefined
+ *
+ * @param {HTMLElement} element the element to check
+ * @returns {boolean}
+ */
+function isNullOrUndefined(element) {
+    return element === undefined || element == null;
+}
+
+/**
+ * Generates the find highlights.
+ *
+ * @param {InputEvent} e
+ */
+function generateFindHighlights(valueToFind) {
+    if (!window.editorExists) {
+        return;
+    }
+
+    let hljs = document.querySelector('.hljs');
+    let highlightRegion = document.querySelector('.haskedit-highlight-region');
+    let editor = document.getElementById('editor');
+    let value = valueToFind;
+
+    if (value === '' && highlightRegion) {
+        highlightRegion.innerHTML = '';
+        return;
+    }
+
+    if (!hasChildren(hljs)) {
+        return;
+    }
+
+    if (isNullOrUndefined(highlightRegion)) {
+        highlightRegion = document.createElement('div');
+        highlightRegion.classList.add('haskedit-highlight-region');
+        hljs.prepend(highlightRegion);
+    } else {
+        highlightRegion.innerHTML = '';
+    }
+
+    fr.find(editor.value, value).forEach(result => {
+        let x = result.coordinates.x;
+        let y = result.coordinates.y;
+
+        highlightRegion.appendChild(getHighlightElement(x, y, value.length));
+    });
 }
 
 /**
@@ -603,12 +781,53 @@ document.addEventListener('DOMContentLoaded', () => {
             .addEventListener('keyup', updateCursorPosition);
     }
 
-    document.getElementById('editor')
-        .addEventListener('input', () => {
-            window.saved = false;
-            updateSavedIndicator();
-            updateFormattingIndicator('NOT_FORMATTED');
-        });
+    document.getElementById('editor').addEventListener('input', (e) => {
+        window.saved = false;
+        updateSavedIndicator();
+        updateFormattingIndicator('NOT_FORMATTED');
+
+        // let findReplace = document.getElementById('find-and-replace');
+        // if (findReplace.classList.contains('collapsed')) {
+        //     return;
+        // }
+        //
+        // TODO: this is competing with the highlight-js event listener.
+        // generateFindHighlights(document.getElementById('find').value);
+    });
+
+    document.getElementById('editor').addEventListener('keydown', (event) => {
+        if (bindings.find(event)) {
+            showFindAndReplace();
+        }
+
+        if (bindings.replace(event)) {
+            showReplaceAndFind();
+        }
+    });
+
+    /**
+     * Waiting for the hljs element to be created before running the background
+     * graphics methods.
+     */
+    docutils.waitForElement('.hljs', (element) => {
+        window.editorExists = true;
+    });
+
+    document.getElementById('find').addEventListener('input', (e) => {
+        generateFindHighlights(e.target.value);
+    });
+
+    document.getElementById('replace-all').addEventListener('click', () => {
+        if (!window.editorExists) {
+            return;
+        }
+
+        let valueToReplace = document.getElementById('find').value;
+        let valueToInsert = document.getElementById('replace').value;
+        let editor = document.getElementById('editor');
+
+        editor.value = fr.replaceAll(editor.value, valueToReplace, valueToInsert);
+    });
 });
 
 /**
@@ -668,5 +887,9 @@ document.addEventListener('keydown', (e) => {
 
     if (bindings.ghcRun(e)) {
         runCommand(parser.parse(config.scripts.run), true);
+    }
+
+    if (e.key === 'Escape') {
+        hideFindAndReplace();
     }
 });

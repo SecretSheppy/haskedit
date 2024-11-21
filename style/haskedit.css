@@ -38,6 +38,60 @@ basic-text-editor styling I developed a few months ago. */
     background: transparent;
 }
 
+/* Haskedit Generic Classes */
+.collapsed {
+    display: none !important;
+}
+
+/* Haskedit Generic Wrappers */
+.input-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.button-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    gap: 5px;
+}
+
+/* Haskedit Generic Components */
+.haskedit-generic-input {
+    background: transparent;
+    border: solid 2px var(--main-bg-left);
+    padding: 5px;
+    outline: none;
+    color: #fff;
+
+    &::placeholder {
+        color: #fff;
+    }
+
+    &:focus {
+        border: solid 2px #fff;
+    }
+}
+
+.haskedit-generic-button {
+    background: transparent;
+    outline: none;
+    border: solid 2px var(--main-bg-left);
+    color: #fff;
+    padding: 5px;
+
+    &:hover {
+        border: solid 2px #fff;
+        background: #fff;
+        color: var(--main-bg-left);
+    }
+
+    &:focus {
+        border: solid 2px #fff;
+    }
+}
+
 /* Style */
 .haskedit-window {
     border: solid 2px var(--border-bg);
@@ -46,6 +100,21 @@ basic-text-editor styling I developed a few months ago. */
     background: linear-gradient(to bottom right, var(--main-bg-left), var(--main-bg-right));
     display: flex;
     flex-direction: column;
+}
+
+.haskedit-find-replace-region {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 20px;
+    background: var(--border-bg);
+    width: 400px;
+    font-size: 15px;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    z-index: 100;
 }
 
 /* % width measurement used in case of future switch to full border layout */
@@ -64,6 +133,8 @@ basic-text-editor styling I developed a few months ago. */
         outline: none !important;
         font-size: 15px;
         overflow: auto;
+        position: relative;
+        z-index: 1;
 
         &::-webkit-scrollbar-thumb {
             background: var(--border-bg);
@@ -91,10 +162,6 @@ basic-text-editor styling I developed a few months ago. */
     flex-shrink: 0;
     background: var(--command-prompt-bg);
     padding: var(--main-window-padding);
-
-    &.collapsed {
-        display: none;
-    }
 
     & .prompt-text {
         font-size: 15px;
@@ -248,5 +315,15 @@ basic-text-editor styling I developed a few months ago. */
     }
     75% {
         content: "...";
+    }
+}
+
+.haskedit-highlight-region {
+
+    & > .highlight {
+        background: rgba(255, 239, 179, 0.39);
+        height: 18px;
+        position: absolute;
+        z-index: 1;
     }
 }

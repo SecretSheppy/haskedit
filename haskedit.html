@@ -11,12 +11,28 @@
     <script src="main.js"></script>
 </head>
 <body class="haskedit-window">
+<!-- find and replace window -->
+<div id="find-and-replace" class="haskedit-find-replace-region collapsed">
+    <div class="input-wrapper">
+        <label for="find">Find</label>
+        <input id="find" class="haskedit-generic-input" placeholder="Enter string to find" />
+    </div>
+<!--    <div class="button-wrapper">-->
+<!--        <button id="find-prev" class="haskedit-generic-button">Find Previous</button>-->
+<!--        <button id="find-next" class="haskedit-generic-button">Find Next</button>-->
+<!--    </div>-->
+    <div class="input-wrapper">
+        <label for="replace">Replace</label>
+        <input id="replace" class="haskedit-generic-input" placeholder="Enter replacement string" />
+    </div>
+    <div class="button-wrapper">
+<!--        <button id="replace-this" class="haskedit-generic-button">Replace</button>-->
+        <button id="replace-all" class="haskedit-generic-button">Replace All</button>
+    </div>
+</div>
 <!-- text editing area -->
 <div class="haskedit-main-region">
     <script type="module">
-        /* To install this file you need to `npm install highlighted-code`
-         * and then copy the `node_modules/highlighted-code/index.js` file
-         * into the position referenced below. */
         (async () => { await import ('./node_modules/highlighted-code/index.js'); })();
     </script>
     <textarea id="editor" class="highlighted-code-override" is="highlighted-code" language="haskell" tab-size="2" placeholder="Space, the final frontier"></textarea>
