@@ -2,6 +2,7 @@
     "prompt-format": "&path; $",
     "file-name-display-format": "&fpath;",
     "indentation-level": "2",
+    "ruler-size": "120",
     "scripts": {
         "build": "ghc -O2 &fpath;",
         "run": "ghc --make &fpath; && &fpathexe;",

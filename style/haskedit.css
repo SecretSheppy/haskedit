@@ -327,3 +327,24 @@ basic-text-editor styling I developed a few months ago. */
         z-index: 1;
     }
 }
+
+.ruler {
+    width: 2px;
+    background: var(--border-bg);
+    opacity: 0.5;
+    position: absolute;
+    height: calc(100% - 65px);
+
+    &::after {
+        position: absolute;
+        content: "Ruler";
+        background: var(--border-bg);
+        color: #fff;
+        font-size: 12px;
+        width: 40px;
+        height: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}

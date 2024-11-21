@@ -271,6 +271,9 @@ function guiConfig() {
     }
 
     document.getElementById('editor').focus();
+
+    document.querySelector('.ruler').style.marginLeft
+        = config["ruler-size"] * CHARACTER_WIDTH_SCALAR + 'px';
 }
 
 /**
