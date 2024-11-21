@@ -111,5 +111,4 @@ As this project was largely built in one day, I do not intend to support it for 
 
 The final additions that I aim to add at some point in the near future.
 
-- [ ] Run command (ghc) + keybinding
-- [ ] Build command (ghc) + keybinding
+- [ ] Resize the terminal
