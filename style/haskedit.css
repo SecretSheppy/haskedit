@@ -352,3 +352,8 @@ basic-text-editor styling I developed a few months ago. */
         height: calc(100% - 365px);
     }
 }
+
+::selection {
+    background: var(--border-bg);
+    color: #fff;
+}
