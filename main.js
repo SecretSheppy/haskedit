@@ -418,10 +418,12 @@ function showCommandPromptRegion() {
 function toggleCommandPromptRegionVisibility() {
     let promptRegion = document.getElementById('prompt-region');
     if (promptRegion.classList.contains('collapsed')) {
+        document.querySelector('.ruler').classList.add('minimized');
         promptRegion.classList.remove('collapsed');
         document.getElementById('prompt-input').focus();
         return;
     }
+    document.querySelector('.ruler').classList.remove('minimized');
     promptRegion.classList.add('collapsed');
     document.getElementById('editor').focus();
 }

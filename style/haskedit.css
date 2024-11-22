@@ -347,4 +347,8 @@ basic-text-editor styling I developed a few months ago. */
         align-items: center;
         justify-content: center;
     }
+
+    &.minimized {
+        height: calc(100% - 365px);
+    }
 }
