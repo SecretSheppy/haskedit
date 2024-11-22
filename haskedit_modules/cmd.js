@@ -79,8 +79,7 @@ function parseArgs(args) {
 function spawnCommand(command, stdoutTarget, stderrTarget, onClose) {
     addCommandToSessionHistory(command);
 
-    if (isCustomCommand(command.command)) {
-        runCustomCommand(command);
+    if (runCustomCommand(command)) {
         return null;
     }
 
@@ -118,22 +117,6 @@ function registerCustomCommand(command, callback) {
 }
 
 /**
- * Detects if the command is in the customCommandsRegister.
- *
- * @param {string} command
- * @returns {boolean}
- */
-function isCustomCommand(command) {
-    for (let custom of customCommandsRegister) {
-        if (custom.command === command) {
-            return true;
-        }
-    }
-
-    return false;
-}
-
-/**
  * Runs the callback function of a custom command.
  *
  * @param {Command} command
@@ -142,8 +125,11 @@ function runCustomCommand(command) {
     for (let custom of customCommandsRegister) {
         if (custom.command === command.command) {
             custom.callback(command.args);
+            return true;
         }
     }
+
+    return false;
 }
 
 /**
