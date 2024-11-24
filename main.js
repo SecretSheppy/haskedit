@@ -293,6 +293,7 @@ async function openFileInGui(filePath) {
     }
 
     document.getElementById('editor').value = text;
+    window.saved = true;
     updateSavedIndicator();
     updateFileNameDisplay();
     checkFileFormatting();
@@ -549,13 +550,14 @@ function checkFileFormatting() {
 
     updateFormattingIndicator('FORMATTING');
 
-    console.info('starting automatic formatting process');
+    console.info('checking file formatting');
     let command = parser.parse(config["on-save"]["formatter"]["script"]);
 
     try {
         let formattedText = execSync(command);
 
-        if (document.getElementById('editor').value === formattedText.toString()) {
+        if (document.getElementById('editor').value.trim() ===
+            formattedText.toString().trim().replaceAll(/\r\n/g, '\n')) {
             updateFormattingIndicator('FORMATTED');
             return;
         }
