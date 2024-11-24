@@ -224,34 +224,6 @@ cmd.registerCustomCommand('help', () => {
 });
 
 /**
- * Generates the element that will be nested into the hljs code view that will
- * contain the absolutely positioned elements;
- *
- * @returns {HTMLDivElement}
- */
-function generateHighlightsElement() {
-    let element = document.createElement('div');
-    element.id = 'haskedit-highlights';
-    element.classList.add('haskedit-highlights');
-    return element;
-}
-
-/**
- * Shows the highlighted element at the top of the hljs code.
- */
-function showHighlightedElement() {
-    document.getElementsByClassName('hljs')[0]
-        .prepend(generateHighlightsElement());
-}
-
-/**
- * Removes the highlighted element at the top of the hljs code.
- */
-function hideHighlightedElement() {
-    document.getElementById('haskedit-highlights').remove();
-}
-
-/**
  * Runs to set up the gui as is specified in the config.json file.
  */
 function guiConfig() {
