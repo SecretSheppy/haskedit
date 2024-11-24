@@ -293,6 +293,7 @@ async function openFileInGui(filePath) {
     }
 
     document.getElementById('editor').value = text;
+    window.saved = true;
     updateSavedIndicator();
     updateFileNameDisplay();
     checkFileFormatting();
