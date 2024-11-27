@@ -226,8 +226,7 @@ function savePreviouslySavedFile(value) {
         return;
     }
 
-    replaceTabsWithSpaces();
-    file.saveFile(value, 'utf-8');
+    file.saveFile(replaceTabsWithSpaces(value), 'utf-8');
     window.saved = true;
     updateSavedIndicator();
     updateFileNameDisplay();
@@ -553,10 +552,10 @@ function checkFileFormatting() {
 /**
  * Replaces all tabs in the editor with the current tab-size worth of spaces.
  */
-function replaceTabsWithSpaces() {
+function replaceTabsWithSpaces(value) {
     let editor = document.getElementById('editor');
     let tabSize = parseInt(editor.getAttribute('tab-size'));
-    editor.value = editor.value.replace(/\t/g, ' '.repeat(tabSize));
+    return value.replace(/\t/g, ' '.repeat(tabSize));
 }
 
 /**
