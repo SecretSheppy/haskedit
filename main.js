@@ -60,6 +60,17 @@ window.historyIndex = 0;
 window.editorExists = false;
 
 /**
+ * Enum like structure for code readability.
+ *
+ * @type {Object}
+ */
+const format = {
+    FORMATTED: 'FORMATTING',
+    NOT_FORMATTED: 'NOT_FORMATTED',
+    FORMATTING: 'FORMATTING',
+}
+
+/**
  * Overriding the cls command and replacing it with one that will clear the
  * html terminal.
  */
@@ -275,7 +286,6 @@ async function openFileInGui(filePath) {
     }
 
     document.getElementById('editor').value = text;
-    window.saved = true;
     updateSavedIndicator();
     updateFileNameDisplay();
     checkFileFormatting();
@@ -474,17 +484,17 @@ function updateFormattingIndicator(stage) {
     let formattedIndicator = document.getElementById('formatted-indicator');
 
     switch (stage) {
-        case 'NOT_FORMATTED':
+        case format.NOT_FORMATTED:
             formattedIndicator.innerText = 'Not Formatted';
             formattedIndicator.classList.remove('true', 'formatting');
             formattedIndicator.classList.add('false');
             break;
-        case 'FORMATTING':
+        case format.FORMATTING:
             formattedIndicator.innerText = 'Formatting';
             formattedIndicator.classList.remove('true', 'false');
             formattedIndicator.classList.add('formatting');
             break;
-        case 'FORMATTED':
+        case format.FORMATTED:
             formattedIndicator.innerText = 'Formatted';
             formattedIndicator.classList.remove('false', 'formatting');
             formattedIndicator.classList.add('true');
@@ -500,7 +510,10 @@ function formatFile() {
         return;
     }
 
-    updateFormattingIndicator('FORMATTING');
+    // TODO: needs refactoring to reduce file load and ensure curosr is always
+    //  in the same position after a file is saved and formatted.
+
+    updateFormattingIndicator(format.FORMATTING);
 
     console.info('starting automatic formatting process');
     let command = parser.parse(config["on-save"]["formatter"]["script"]);
@@ -515,9 +528,10 @@ function formatFile() {
         file.saveFile(formattedText.toString(), 'utf-8');
         console.log('formatted file successfully');
 
-        updateFormattingIndicator('FORMATTED');
+        updateFormattingIndicator(format.FORMATTED);
     } catch (e) {
         writeStderr(`failed to format ${file.getLocalName()} with command "${command}"`);
+        updateFormattingIndicator(format.NOT_FORMATTED);
         showCommandPromptRegion();
     }
 }
@@ -530,9 +544,9 @@ function checkFileFormatting() {
         return;
     }
 
-    updateFormattingIndicator('FORMATTING');
+    updateFormattingIndicator(format.FORMATTING);
 
-    console.info('checking file formatting');
+    console.info('starting automatic formatting process');
     let command = parser.parse(config["on-save"]["formatter"]["script"]);
 
     try {
@@ -540,15 +554,15 @@ function checkFileFormatting() {
 
         if (document.getElementById('editor').value.trim() ===
             formattedText.toString().trim().replaceAll(/\r\n/g, '\n')) {
-            updateFormattingIndicator('FORMATTED');
+            updateFormattingIndicator(format.FORMATTED);
             return;
         }
-
-        updateFormattingIndicator('NOT_FORMATTED');
     } catch (e) {
         writeStderr(`format checker failed to format ${file.getLocalName()} with command "${command}"`);
         showCommandPromptRegion();
     }
+
+    updateFormattingIndicator(format.NOT_FORMATTED);
 }
 
 /**
