@@ -109,16 +109,7 @@ cmd.registerCustomCommand('save', (args) => {
     let editor = document.getElementById('editor');
 
     if (args.length === 0) {
-        if (file.getFilePath() === undefined) {
-            writeStderr('file has not been previously saved, must give a filename');
-        } else {
-            replaceTabsWithSpaces();
-            file.saveFile(editor.value, 'utf-8');
-            window.saved = true;
-            updateSavedIndicator();
-            updateFileNameDisplay();
-            formatFile();
-        }
+        savePreviouslySavedFile(editor.value);
         showCommandPrompt();
         return;
     }
@@ -222,6 +213,26 @@ cmd.registerCustomCommand('help', () => {
     writeStdout(fs.readFileSync('./help.txt', 'utf-8'));
     showCommandPrompt();
 });
+
+/**
+ * save a previously saved file
+ *
+ * @param {string} value the new value of the file
+ */
+function savePreviouslySavedFile(value) {
+    if (file.getFilePath() === undefined) {
+        writeStderr('file has not been previously saved, must give a filename');
+        showCommandPromptRegion();
+        return;
+    }
+
+    replaceTabsWithSpaces();
+    file.saveFile(value, 'utf-8');
+    window.saved = true;
+    updateSavedIndicator();
+    updateFileNameDisplay();
+    formatFile();
+}
 
 /**
  * Runs to set up the gui as is specified in the config.json file.
@@ -842,18 +853,7 @@ document.addEventListener('keydown', (e) => {
     }
 
     if (bindings.save(e)) {
-        let editor = document.getElementById('editor');
-        if (file.getFilePath() === undefined) {
-            writeStderr('file has not been previously saved, must give a filename');
-            showCommandPromptRegion();
-        } else {
-            replaceTabsWithSpaces();
-            file.saveFile(editor.value, 'utf-8');
-            window.saved = true;
-            updateSavedIndicator();
-            updateFileNameDisplay();
-            formatFile();
-        }
+        savePreviouslySavedFile(document.getElementById('editor').value);
     }
 
     if (bindings.interactive(e)) {
