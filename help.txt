@@ -33,3 +33,5 @@ The below keyboard shortcuts are for managing the haskedit window.
 The remaining shortcuts are for quickly performing some of the haskedit commands.
  - CTRL + S                     -> saves the open file
  - CTRL + I                     -> launches a ghci environment in a new cmd.exe (for the current file).
+ - CTRL + B                     -> builds the current file with ghc
+ - CTRL + R                     -> builds and then runs the current file with ghc
