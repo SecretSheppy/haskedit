@@ -60,6 +60,17 @@ window.historyIndex = 0;
 window.editorExists = false;
 
 /**
+ * Enum like structure for code readability.
+ *
+ * @type {Object}
+ */
+const format = {
+    FORMATTED: 'FORMATTING',
+    NOT_FORMATTED: 'NOT_FORMATTED',
+    FORMATTING: 'FORMATTING',
+}
+
+/**
  * Overriding the cls command and replacing it with one that will clear the
  * html terminal.
  */
@@ -109,16 +120,7 @@ cmd.registerCustomCommand('save', (args) => {
     let editor = document.getElementById('editor');
 
     if (args.length === 0) {
-        if (file.getFilePath() === undefined) {
-            writeStderr('file has not been previously saved, must give a filename');
-        } else {
-            replaceTabsWithSpaces();
-            file.saveFile(editor.value, 'utf-8');
-            window.saved = true;
-            updateSavedIndicator();
-            updateFileNameDisplay();
-            formatFile();
-        }
+        savePreviouslySavedFile(editor.value);
         showCommandPrompt();
         return;
     }
@@ -224,31 +226,22 @@ cmd.registerCustomCommand('help', () => {
 });
 
 /**
- * Generates the element that will be nested into the hljs code view that will
- * contain the absolutely positioned elements;
+ * save a previously saved file
  *
- * @returns {HTMLDivElement}
+ * @param {string} value the new value of the file
  */
-function generateHighlightsElement() {
-    let element = document.createElement('div');
-    element.id = 'haskedit-highlights';
-    element.classList.add('haskedit-highlights');
-    return element;
-}
+function savePreviouslySavedFile(value) {
+    if (file.getFilePath() === undefined) {
+        writeStderr('file has not been previously saved, must give a filename');
+        showCommandPromptRegion();
+        return;
+    }
 
-/**
- * Shows the highlighted element at the top of the hljs code.
- */
-function showHighlightedElement() {
-    document.getElementsByClassName('hljs')[0]
-        .prepend(generateHighlightsElement());
-}
-
-/**
- * Removes the highlighted element at the top of the hljs code.
- */
-function hideHighlightedElement() {
-    document.getElementById('haskedit-highlights').remove();
+    file.saveFile(replaceTabsWithSpaces(value), 'utf-8');
+    window.saved = true;
+    updateSavedIndicator();
+    updateFileNameDisplay();
+    formatFile();
 }
 
 /**
@@ -293,7 +286,6 @@ async function openFileInGui(filePath) {
     }
 
     document.getElementById('editor').value = text;
-    window.saved = true;
     updateSavedIndicator();
     updateFileNameDisplay();
     checkFileFormatting();
@@ -492,17 +484,17 @@ function updateFormattingIndicator(stage) {
     let formattedIndicator = document.getElementById('formatted-indicator');
 
     switch (stage) {
-        case 'NOT_FORMATTED':
+        case format.NOT_FORMATTED:
             formattedIndicator.innerText = 'Not Formatted';
             formattedIndicator.classList.remove('true', 'formatting');
             formattedIndicator.classList.add('false');
             break;
-        case 'FORMATTING':
+        case format.FORMATTING:
             formattedIndicator.innerText = 'Formatting';
             formattedIndicator.classList.remove('true', 'false');
             formattedIndicator.classList.add('formatting');
             break;
-        case 'FORMATTED':
+        case format.FORMATTED:
             formattedIndicator.innerText = 'Formatted';
             formattedIndicator.classList.remove('false', 'formatting');
             formattedIndicator.classList.add('true');
@@ -518,7 +510,10 @@ function formatFile() {
         return;
     }
 
-    updateFormattingIndicator('FORMATTING');
+    // TODO: needs refactoring to reduce file load and ensure curosr is always
+    //  in the same position after a file is saved and formatted.
+
+    updateFormattingIndicator(format.FORMATTING);
 
     console.info('starting automatic formatting process');
     let command = parser.parse(config["on-save"]["formatter"]["script"]);
@@ -533,9 +528,10 @@ function formatFile() {
         file.saveFile(formattedText.toString(), 'utf-8');
         console.log('formatted file successfully');
 
-        updateFormattingIndicator('FORMATTED');
+        updateFormattingIndicator(format.FORMATTED);
     } catch (e) {
         writeStderr(`failed to format ${file.getLocalName()} with command "${command}"`);
+        updateFormattingIndicator(format.NOT_FORMATTED);
         showCommandPromptRegion();
     }
 }
@@ -548,9 +544,9 @@ function checkFileFormatting() {
         return;
     }
 
-    updateFormattingIndicator('FORMATTING');
+    updateFormattingIndicator(format.FORMATTING);
 
-    console.info('checking file formatting');
+    console.info('starting automatic formatting process');
     let command = parser.parse(config["on-save"]["formatter"]["script"]);
 
     try {
@@ -558,24 +554,24 @@ function checkFileFormatting() {
 
         if (document.getElementById('editor').value.trim() ===
             formattedText.toString().trim().replaceAll(/\r\n/g, '\n')) {
-            updateFormattingIndicator('FORMATTED');
+            updateFormattingIndicator(format.FORMATTED);
             return;
         }
-
-        updateFormattingIndicator('NOT_FORMATTED');
     } catch (e) {
         writeStderr(`format checker failed to format ${file.getLocalName()} with command "${command}"`);
         showCommandPromptRegion();
     }
+
+    updateFormattingIndicator(format.NOT_FORMATTED);
 }
 
 /**
  * Replaces all tabs in the editor with the current tab-size worth of spaces.
  */
-function replaceTabsWithSpaces() {
+function replaceTabsWithSpaces(value) {
     let editor = document.getElementById('editor');
     let tabSize = parseInt(editor.getAttribute('tab-size'));
-    editor.value = editor.value.replace(/\t/g, ' '.repeat(tabSize));
+    return value.replace(/\t/g, ' '.repeat(tabSize));
 }
 
 /**
@@ -870,18 +866,7 @@ document.addEventListener('keydown', (e) => {
     }
 
     if (bindings.save(e)) {
-        let editor = document.getElementById('editor');
-        if (file.getFilePath() === undefined) {
-            writeStderr('file has not been previously saved, must give a filename');
-            showCommandPromptRegion();
-        } else {
-            replaceTabsWithSpaces();
-            file.saveFile(editor.value, 'utf-8');
-            window.saved = true;
-            updateSavedIndicator();
-            updateFileNameDisplay();
-            formatFile();
-        }
+        savePreviouslySavedFile(document.getElementById('editor').value);
     }
 
     if (bindings.interactive(e)) {
